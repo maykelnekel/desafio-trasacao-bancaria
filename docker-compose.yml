@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  app:
+    container_name: app
+    build: .
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    container_name: postgres
+    image: postgres:alpine
+    ports:
+      - 5431:5432
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 10s
+      retries: 2
+      start_period: 10s
