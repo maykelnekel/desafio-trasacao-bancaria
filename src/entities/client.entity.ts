@@ -1,8 +1,8 @@
 import { BeforeInsert, Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { hashSync } from "bcryptjs"
 
-@Entity('users')
-class User {
+@Entity('clients')
+class Client {
     @PrimaryGeneratedColumn("uuid")
     id: string
 
@@ -18,6 +18,9 @@ class User {
     @Column({ type: "varchar", nullable: false, length: 120 })
     password: string
 
+    @Column({ type: "decimal", nullable: true, default: 0, precision: 100, scale: 2 })
+    wallet: number
+
     @BeforeInsert()
     createPassword() {
         const password = this.password
@@ -27,4 +30,4 @@ class User {
     }
 
 }
-export default User
+export default Client

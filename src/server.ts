@@ -4,13 +4,14 @@ import { AppDataSource } from "./data-source"
 
 const { APP_PORT } = process.env
 
-app.listen(APP_PORT, async () => {
-    AppDataSource.initialize()
-        .then(() => {
-            console.log("Data Source has been initialized!")
+AppDataSource.initialize()
+    .then(() => {
+        console.log("Data Source has been initialized!")
+        app.listen(APP_PORT, async () => {
+            console.log(`server running at http://localhost:${APP_PORT}`);
         })
-        .catch((err) => {
-            console.error("Error during Data Source initialization", err)
-        })
-    console.log(`server running at http://localhost:${APP_PORT}`);
-})
+    })
+    .catch((err) => {
+        console.error("Error during Data Source initialization", err)
+    })
+

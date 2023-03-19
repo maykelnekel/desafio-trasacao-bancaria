@@ -1,6 +1,8 @@
 import { DataSource } from "typeorm"
 import "dotenv/config"
-
+import Seller from "./entities/seller.entity"
+import Client from "./entities/client.entity"
+import path from "path"
 const {
     POSTGRES_PASSWORD,
     POSTGRES_DB,
@@ -8,6 +10,9 @@ const {
     POSTGRES_HOST,
     POSTGRES_PORT,
 } = process.env
+
+const migrationPath = path.join(__dirname, '/migrations/**.{ts,js}')
+const entitiePath = path.join(__dirname, '/entities/**.{ts,js}')
 
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -18,16 +23,8 @@ export const AppDataSource = new DataSource({
     database: POSTGRES_DB,
     logging: true,
     synchronize: false,
-    entities: ["./entities/**.{ts,js}"],
-    migrations: ["./migrations/**.{ts,js}"],
+    entities: [entitiePath],
+    migrations: [migrationPath],
 })
 
-export const databaseConnection = async () => {
-    return AppDataSource.initialize()
-        .then(() => {
-            console.log("Data Source has been initialized!")
-        })
-        .catch((err) => {
-            console.error("Error during Data Source initialization", err)
-        })
-}
+
